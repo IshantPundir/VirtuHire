@@ -13,7 +13,7 @@ let chatlog = [
     },
     {
         'virtuHire': false,
-        'message': 'Hello, Im Ishant'
+        'message': 'Hello, Im Ishant Start Message'
     },
     {
         'virtuHire': true,
@@ -37,7 +37,7 @@ let chatlog = [
     },
     {
         'virtuHire': false,
-        'message': 'Hello, Im Ishant'
+        'message': 'Hello, Im Ishant Last message'
     },
     {
         'virtuHire': true,
@@ -58,9 +58,11 @@ const ChatRoom = () => {
     return (
         <div id="chat-room">
             <div id="chat-hitory" className="container">
-                {chatlog.map((chat, index) => (
-                    <ChatBubble key={index} virtuHire={chat.virtuHire} message={chat.message} />
-                ))}
+                <div id="chat-bubble-container">
+                    {chatlog.map((chat, index) => (
+                        <ChatBubble key={index} virtuHire={chat.virtuHire} message={chat.message} />
+                    ))}
+                </div>
             </div>
             <div id="chat-input" className="container">
                 <textarea type="text"
@@ -68,7 +70,6 @@ const ChatRoom = () => {
                     value={messageText}
                     onChange={(e) => setMessageText(e.target.value)}/>
                 <div id="action-buttons">
-
                     <img src={SendIcon} alt="Send Logo" onClick={sendMessage}/>
                     <img src={MikeIcon} alt="STT" />
                 </div>
