@@ -1,0 +1,36 @@
+#button-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: fit-content;
+}
+
+#button {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: fit-content;
+    height: 6rem;
+    /* height: fit-content; */
+    font-size: 1rem;
+    padding: 0rem 5rem 0rem 5rem;
+    border-radius: 2rem;
+    color: rgba(0, 0, 0, 0.5);
+    background-color: #FFFFFF;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#button img {
+    margin-left: 8px;
+    max-height: 4rem;
+}
+
+.button h1 {
+    margin: 0;
+    font-weight: 400;
+}
+
+#button:hover {
+    background-color: #f0f0f0;
+}

@@ -1,0 +1,23 @@
+#chat-room {
+    position: absolute;
+    width: 80%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.container {
+    border: 1px solid;
+    border-radius: 30px;
+    border-color: white;
+}
+
+#chat-hitory {
+    height: 80vh;
+    margin-bottom: 30px;
+}
+
+#chat-input h3{
+    font-size: 21px;
+    font-weight: 400;
+}

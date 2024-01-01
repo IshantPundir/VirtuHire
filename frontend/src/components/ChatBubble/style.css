@@ -1,0 +1,14 @@
+#bubble {
+    display: flex;
+    padding: 10px;
+}
+
+#box {
+    width: fit-content;
+}
+
+#box h1 {
+    padding: 10px;
+    font-weight: 400;
+    font-size: 20px;
+}
