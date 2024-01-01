@@ -10,13 +10,15 @@ const ChatBubble = ({key, virtuHire, message}) => {
   };
   const boxStyle = {
     backgroundColor: virtuHire ? "#009E3F": "#9E0098",
-    borderRadius: virtuHire ? "50px 50px 50px 5px": "50px 50px 5px 50px"
+    borderRadius: virtuHire ? "50px 50px 50px 5px": "50px 50px 5px 50px",
+    textAlign: virtuHire? "left": "right"
   };
 
   return (
     <div id="bubble" style={bubbleStyle}>
       <div id="box" style={boxStyle}>
-        <h1>{message}</h1>
+        <h1>{virtuHire?"VirtuHire":"User"}</h1>
+        <p>{message}</p>
       </div>
     </div> 
   );

@@ -11,7 +11,7 @@ let chatlog = [
     },
     {
         'virtuHire': false,
-        'message': 'Hello, Im Ishnat'
+        'message': 'Hello, Im Ishant'
     },
     {
         'virtuHire': true,
