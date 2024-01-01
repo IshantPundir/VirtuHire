@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import "./style.css";
 
@@ -46,6 +46,15 @@ let chatlog = [
 ];
 
 const ChatRoom = () => {
+    const [messageText, setMessageText] = useState("");
+
+    const sendMessage = (event) => {
+        if (messageText !== "") {
+            console.log("Sending message");
+            setMessageText("");
+        }
+    }
+
     return (
         <div id="chat-room">
             <div id="chat-hitory" className="container">
@@ -54,9 +63,13 @@ const ChatRoom = () => {
                 ))}
             </div>
             <div id="chat-input" className="container">
-                <textarea type="text" placeholder="Write you response here"></textarea>
+                <textarea type="text"
+                    placeholder="Write you response here"
+                    value={messageText}
+                    onChange={(e) => setMessageText(e.target.value)}/>
                 <div id="action-buttons">
-                    <img src={SendIcon} alt="Send Logo" />
+
+                    <img src={SendIcon} alt="Send Logo" onClick={sendMessage}/>
                     <img src={MikeIcon} alt="STT" />
                 </div>
             </div>
