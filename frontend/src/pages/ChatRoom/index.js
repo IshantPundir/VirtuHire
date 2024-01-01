@@ -3,6 +3,8 @@ import React from "react";
 import "./style.css";
 
 import ChatBubble from "../../components/ChatBubble";
+import SendIcon from "../../assets/send.svg";
+import MikeIcon from "../../assets/mike.svg";
 
 let chatlog = [
     {   
@@ -53,7 +55,10 @@ const ChatRoom = () => {
             </div>
             <div id="chat-input" className="container">
                 <textarea type="text" placeholder="Write you response here"></textarea>
-                <div>Submit</div>
+                <div id="action-buttons">
+                    <img src={SendIcon} alt="Send Logo" />
+                    <img src={MikeIcon} alt="STT" />
+                </div>
             </div>
         </div>
     );
