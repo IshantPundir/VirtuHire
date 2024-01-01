@@ -5,16 +5,16 @@ import "./style.css";
 import ChatBubble from "../../components/ChatBubble";
 
 let chatlog = [
-    {
-        'author': 'VirtuHire',
+    {   
+        'virtuHire': true,
         'message': 'Hello, Im VirtuHire, and I will be taking your interview.'
     },
     {
-        'author': 'User',
+        'virtuHire': false,
         'message': 'Hello, Im Ishnat'
     },
     {
-        'author': 'VirtuHire',
+        'virtuHire': true,
         'message': 'Hello, Ishant. Please share some information about you.'
     }
 ];
@@ -24,7 +24,7 @@ const ChatRoom = () => {
         <div id="chat-room">
             <div id="chat-hitory" className="container">
                 {chatlog.map((chat, index) => (
-                    <ChatBubble key={index} author={chat.author} message={chat.message} />
+                    <ChatBubble key={index} virtuHire={chat.virtuHire} message={chat.message} />
                 ))}
             </div>
             <div id="chat-input" className="container">

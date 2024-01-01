@@ -5,6 +5,8 @@
 
 #box {
     width: fit-content;
+    height: fit-content;
+    max-width: 50%;
 }
 
 #box h1 {

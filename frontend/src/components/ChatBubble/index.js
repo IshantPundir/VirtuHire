@@ -1,15 +1,16 @@
 import React from "react";
 import "./style.css";
 
-const ChatBubble = ({key, author, message}) => {
-  const isVirtuHire = author === "VirtuHire";
-
+const ChatBubble = ({key, virtuHire, message}) => {
+  /*
+  Styling based on author
+  */
   const bubbleStyle = {
-    justifyContent: isVirtuHire ? "flex-start" : "flex-end",
+    justifyContent: virtuHire ? "flex-start" : "flex-end",
   };
   const boxStyle = {
-    backgroundColor: isVirtuHire ? "#009E3F": "#9E0098",
-    borderRadius: isVirtuHire ? "50px 50px 50px 5px": "50px 50px 5px 50px"
+    backgroundColor: virtuHire ? "#009E3F": "#9E0098",
+    borderRadius: virtuHire ? "50px 50px 50px 5px": "50px 50px 5px 50px"
   };
 
   return (
