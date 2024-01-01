@@ -16,6 +16,30 @@ let chatlog = [
     {
         'virtuHire': true,
         'message': 'Hello, Ishant. Please share some information about you.'
+    },
+    {
+        'virtuHire': false,
+        'message': 'Hello, Im Ishant'
+    },
+    {
+        'virtuHire': true,
+        'message': 'Hello, Ishant. Please share some information about you.'
+    },
+    {
+        'virtuHire': false,
+        'message': 'Hello, Im Ishant'
+    },
+    {
+        'virtuHire': true,
+        'message': 'Hello, Ishant. Please share some information about you.'
+    },
+    {
+        'virtuHire': false,
+        'message': 'Hello, Im Ishant'
+    },
+    {
+        'virtuHire': true,
+        'message': 'Hello, Ishant. Please share some information about you.'
     }
 ];
 
@@ -28,7 +52,8 @@ const ChatRoom = () => {
                 ))}
             </div>
             <div id="chat-input" className="container">
-                <h3>Hi I'm Ishant Pundir.</h3>
+                <textarea type="text" placeholder="Write you response here"></textarea>
+                <div>Submit</div>
             </div>
         </div>
     );
