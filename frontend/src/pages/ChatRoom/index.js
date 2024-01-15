@@ -12,7 +12,7 @@ const ChatRoom = () => {
     const [messageText, setMessageText] = useState("");
     const [chatLog, setChatLog] = useState([]);
     const [socket, setSocket] = useState(null);
-    const [started, setStarted] = useState(true);
+    const [started, setStarted] = useState(false);
     const [speaking, setSpeaking] = useState(false);
 
     useEffect(() => {
@@ -31,7 +31,7 @@ const ChatRoom = () => {
             socket.onmessage = (e) => {
                 const data = JSON.parse(e.data);
                 console.log("Message from virtuHire: ", data);
-                setChatLog(chatLog => [...chatLog, { virtuHire: true, message: data.message }]);
+                setChatLog(chatLog => [...chatLog, { virtuHire: true, response: data }]);
                 if (!started) {
                     setStarted(true);
                 }
@@ -42,7 +42,7 @@ const ChatRoom = () => {
     const sendMessage = () => {
         if (messageText && socket) {
             console.log("Sending message to VirtuHire")
-            setChatLog(chatLog => [...chatLog, { virtuHire: false, message: messageText }]);
+            setChatLog(chatLog => [...chatLog, { virtuHire: false, response:{"message":messageText} }]);
             socket.send(JSON.stringify({ 'message': messageText }));
             setMessageText("");
         }
@@ -57,7 +57,7 @@ const ChatRoom = () => {
                     <div id="chat-bubble-container">
                         {chatLog.map((chat, _) => (
                             <ChatBubble virtuHire={chat.virtuHire}
-                                        message={chat.message}
+                                        response={chat.response}
                                         speaking={speaking}
                                         setSpeaking={setSpeaking}/>
                         ))}
@@ -81,10 +81,7 @@ const ChatRoom = () => {
                     </div>
                 </div>
                 </>
-            ):
-            (
-                <LoadingRing/>
-            )
+            ):(<LoadingRing/>)
             }
             
         </div>

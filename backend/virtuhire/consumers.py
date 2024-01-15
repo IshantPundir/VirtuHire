@@ -1,10 +1,15 @@
+import os
 import json
-import random
+import base64
+from typing import Tuple
 
 import torch
 from loguru import logger
 from transformers import AutoModelForCausalLM, AutoTokenizer
 from channels.generic.websocket import WebsocketConsumer
+from google.cloud import texttospeech
+
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "/home/ishant/projects/VirtuHire/backend/credentials/google-cloud-key.json"
 
 PROMPT = """
 [INST]
@@ -85,6 +90,18 @@ This is example conversation you might have with a candidate.
 [VirtueHire]: Hello, I'm VirtueHire, and I will be conducted your interview today, Can you please start by introducing youself.
 """
 
+class Response:
+    def __init__(self, message:str, audio:bytes|None) -> None:
+        self._message = message
+        self._audio = audio
+    
+    @property
+    def message(self) -> str:
+        return self._message
+
+    @property
+    def audio(self) -> bytes|None:
+        return self._audio
 class VirtuHire:
     def __init__(self, device:str='cuda', cv:str="Swastik_Dubey_resume_.pdf") -> None:
         self.prompt = PROMPT
@@ -98,6 +115,10 @@ class VirtuHire:
         self.model.to(self.device)
         
         # Setup prompt for CV
+        self.setup_prompt(cv=cv)
+
+        # Initialize TTS APIs.
+        self.tts = texttospeech.TextToSpeechClient()
 
         # VirtuHire is ready to serve...
         logger.info("VirtuHire is ready!")
@@ -106,8 +127,38 @@ class VirtuHire:
         # TODO: Add cv data to prompt;
         ...
 
+    def _get_audio(self, text:str) -> bytes|None:
+        synthesis_input = texttospeech.SynthesisInput(text=text)
+        # TODO: Make it configurable during initialization????
+        voice = texttospeech.VoiceSelectionParams(
+            language_code="en-IN", ssml_gender=texttospeech.SsmlVoiceGender.NEUTRAL
+        )
 
-    def ask(self, query:str) -> str:
+        # Select the type of audio file you want returned
+        audio_config = texttospeech.AudioConfig(
+            audio_encoding=texttospeech.AudioEncoding.MP3
+        )
+        try:
+            audio = self.tts.synthesize_speech(
+                input=synthesis_input, voice=voice, audio_config=audio_config
+            )
+            return audio.audio_content
+
+        except Exception as e:
+            logger.error(f"ERRRO in TTS: {e}")
+            return None
+        
+    def filter_response(self, response:str) -> str:
+        response = response.split('[USER]')[0]
+        return response.replace('</s>', '')
+    
+    def get_greet_response(self) -> Response:
+        # send a greeting message
+        greet_message = "Hello, I'm VirtueHire, and I will be conducting your interview today, Can you please start by introducing yourself"
+        return Response(message=greet_message, audio=None)
+        return Response(message=greet_message, audio=self._get_audio(greet_message))
+
+    def ask(self, query:str) -> Response:
         logger.info(f"USER: {query}")
 
         # Add the query to the prompt.
@@ -120,13 +171,17 @@ class VirtuHire:
         
         # Get the latest response from the result.
         result = result.split(query)[-1]
-        result = result.split('[USER]')[0]
+        result = self.filter_response(result)
+
+
         # Update the prompt with the latest result.
-
         self.prompt += result
-        logger.info(f"VirtuHire: {result}")
 
-        return result
+        logger.info(f"VirtuHire: {result}")
+        audio = self._get_audio(result)
+
+        response = Response(message=result, audio=audio)
+        return response
 
 class VirtuHireConsumer(WebsocketConsumer):
     def connect(self):
@@ -136,15 +191,22 @@ class VirtuHireConsumer(WebsocketConsumer):
 
         # send a greeting message
         greet_message = "Hello, I'm VirtueHire, and I will be conducted your interview today, Can you please start by introducing youself"
-        self.send(text_data=json.dumps({"message": greet_message}))
-
+        # self.send(text_data=json.dumps({"message": greet_message}))
+        self._send(self.virtuHire.get_greet_response())
+        
     def disconnect(self, code):
         pass
+
+    def _send(self, response:Response) -> None:
+        self.send(text_data=json.dumps({
+            "message": response.message,
+            "audio": base64.b64encode(response.audio).decode('utf-8') if response.audio is not None else None
+        }))
 
     def receive(self, text_data=None, bytes_data=None):
         print(f"New message recived from user: {text_data}")
         text_data_json = json.loads(text_data)
         message = text_data_json["message"]
-        result = self.virtuHire.ask(message)
+        response = self.virtuHire.ask(message)
 
-        self.send(text_data=json.dumps({"message": result}))
+        self._send(response)

@@ -1,55 +1,76 @@
-import React, {useEffect} from "react";
-import Speech from 'react-speech';
-
-// import icon from "../../assets/play.svg";
-
+import React, { useState, useRef, useEffect } from "react";
+import icon from "../../assets/play.svg";
 import "./style.css";
 
-const ChatBubble = ({virtuHire, message, speaking, setSpeaking}) => {
-  /*
-  Styling based on author
-  */
+const ChatBubble = ({ virtuHire, response, speaking, setSpeaking }) => {
+  const [audioPlayer, setAudioPlayer] = useState(null);
+
   const bubbleStyle = {
     justifyContent: virtuHire ? "flex-start" : "flex-end",
   };
+
   const boxStyle = {
-    backgroundColor: virtuHire ? "#009E3F": "#9E0098",
-    borderRadius: virtuHire ? "50px 50px 50px 5px": "50px 50px 5px 50px",
-    textAlign: virtuHire? "left": "right"
+    backgroundColor: virtuHire ? "#009E3F" : "#9E0098",
+    borderRadius: virtuHire ? "50px 50px 50px 5px" : "50px 50px 5px 50px",
+    textAlign: virtuHire ? "left" : "right",
   };
 
+  const playAudio = () => {
+    if (speaking) {
+      console.log("Stopping audio!");
+      setSpeaking(false);
+      audioPlayer.pause();
+    } else {
+      console.log("Playing audio!");
+      setSpeaking(true);
 
-  /* TTS */
-  const msg = new SpeechSynthesisUtterance()
-  msg.text = message
+      const binaryAudio = atob(response.audio);
+      const arrayBuffer = new ArrayBuffer(binaryAudio.length);
+      const uint8Array = new Uint8Array(arrayBuffer);
+
+      for (let i = 0; i < binaryAudio.length; i++) {
+        uint8Array[i] = binaryAudio.charCodeAt(i);
+      }
+
+      const blob = new Blob([uint8Array], { type: "audio/wav" });
+
+      // Create an audio element
+      const audioElement = new Audio();
+      audioElement.src = URL.createObjectURL(blob);
+
+      // Stop audio when audio is done playing!
+      audioElement.onended = () => {
+        console.log("Audio playback complete!");
+        setSpeaking(false);
+      };
+
+      audioElement.play();
+
+      // Set audio player reference for pause functionality
+      setAudioPlayer(audioElement);
+    }
+  };
 
   useEffect(() => {
-    console.log("Playing audio...")
-    window.speechSynthesis.cancel();
-    window.speechSynthesis.speak(msg)
-    console.log("Done!", window.speechSynthesis.speaking);
-  }, [msg])
+    // Automatically trigger playAudio if response.audio exists
+    if (response.audio) {
+      playAudio();
+    }
+  }, [response.audio]);
 
-  // const playAudio = () => {
-  //   if (speaking) {
-  //     console.log("Playing audio already");
-  //     setSpeaking(false);
-  //   }
-  //   else {
-  //     console.log("Playing audio");
-  //     setSpeaking(true);
-  //   }
-  // }
 
   return (
     <div id="bubble" style={bubbleStyle}>
-      {/* <img id="play-button" src={icon} alt="Play button" onClick={playAudio}/> */}
-      {/* <Speech text="Welcome to react speech" displayText={true} textAsButton={true}/>     */}
       <div id="box" style={boxStyle}>
-        <h1>{virtuHire?"VirtuHire":"User"}</h1>
-        <p>{message}</p>
+        <div>
+          <h1>{virtuHire ? "VirtuHire" : "User"}</h1>
+            {response.audio?(
+              <img id="play-button" src={icon} alt="Play button" onClick={playAudio} />
+            ):(<></>)}
+        </div>
+        <p>{response.message}</p>
       </div>
-    </div> 
+    </div>
   );
 };
 
