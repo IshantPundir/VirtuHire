@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition'
+
 // import axios from 'axios';
 
 import "./style.css";
@@ -9,11 +11,17 @@ import LoadingRing from "../../components/LoadingRing";
 import LoadingBar from "../../components/LoadingBar";
 
 const ChatRoom = () => {
-    const [messageText, setMessageText] = useState("");
     const [chatLog, setChatLog] = useState([]);
     const [socket, setSocket] = useState(null);
-    const [started, setStarted] = useState(false);
+    const [started, setStarted] = useState(true);
     const [speaking, setSpeaking] = useState(false);
+
+    const {
+        transcript,
+        listening,
+        resetTranscript,
+        browserSupportsSpeechRecognition
+    } = useSpeechRecognition();
 
     useEffect(() => {
         console.log("Connecting to VirtuHire websocket;");
@@ -39,12 +47,16 @@ const ChatRoom = () => {
         }
     }, [socket, setChatLog, started]);
 
+    if (!browserSupportsSpeechRecognition) {
+        return <span>Browser doesn't support speech recognition.</span>;
+    }
+
     const sendMessage = () => {
-        if (messageText && socket) {
+        if (transcript && socket) {
             console.log("Sending message to VirtuHire")
-            setChatLog(chatLog => [...chatLog, { virtuHire: false, response:{"message":messageText} }]);
-            socket.send(JSON.stringify({ 'message': messageText }));
-            setMessageText("");
+            setChatLog(chatLog => [...chatLog, { virtuHire: false, response:{"message":transcript} }]);
+            socket.send(JSON.stringify({ 'message': transcript }));
+            resetTranscript();
         }
     }
 
@@ -72,12 +84,14 @@ const ChatRoom = () => {
                     <textarea
                         type="text"
                         placeholder="Write your response here"
-                        value={messageText}
-                        onChange={(e) => setMessageText(e.target.value)}
+                        value={transcript}
+                        // onChange={(e) => setMessageText(e.target.value)}
                     />
                     <div id="action-buttons">
                         <img src={SendIcon} alt="Send Logo" onClick={sendMessage} />
-                        <img src={MikeIcon} alt="STT" />
+                        {/* <button onClick={SpeechRecognition.startListening}>Start</button> */}
+                        {/* <button onClick={SpeechRecognition.stopListening}>Stop</button> */}
+                        <img src={MikeIcon} onClick={!listening?SpeechRecognition.startListening:SpeechRecognition.stopListening} alt="STT" />
                     </div>
                 </div>
                 </>

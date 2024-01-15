@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import icon from "../../assets/play.svg";
 import "./style.css";
 
@@ -56,7 +56,7 @@ const ChatBubble = ({ virtuHire, response, speaking, setSpeaking }) => {
     if (response.audio) {
       playAudio();
     }
-  }, [response.audio]);
+  });
 
 
   return (
