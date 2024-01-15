@@ -15,6 +15,7 @@
     padding: 10px 25px 0px 25px;
     font-weight: 700;
     font-size: 15px;
+    user-select: none;
 }
 
 #box p {
@@ -23,4 +24,13 @@
     font-weight: 400;
     font-size: 18px;
     text-align: left;
+    text-wrap: wrap;
+}
+
+#play-button {
+    position: relative;
+    height: 20px;
+    left: 50px;
+    top: 10px;
+    cursor: pointer;
 }
