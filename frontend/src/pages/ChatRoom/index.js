@@ -25,9 +25,9 @@ const ChatRoom = () => {
 
     useEffect(() => {
         console.log("Connecting to VirtuHire websocket;");
+        // TODO: Change lobby with CV id;
         const _socket = new WebSocket(
             'ws://127.0.0.1:8000/ws/virtuhire/lobby/'
-            // 'ws://10.1.6.70:8000/ws/virtuhire/lobby/'
         );
         console.log("Connected to VirtuHire");
         setSocket(_socket);
@@ -90,7 +90,7 @@ const ChatRoom = () => {
                     />
                     <div id="action-buttons">
                         <img src={SendIcon} alt="Send Logo" onClick={sendMessage} />
-                        <img src={MikeIcon} onClick={!listening?SpeechRecognition.startListening:SpeechRecognition.stopListening} alt="STT" />
+                        <img src={MikeIcon} onClick={!listening?SpeechRecognition.startListening:SpeechRecognition.stopListening} alt="Action Button" />
                     </div>
                 </div>
                 </>

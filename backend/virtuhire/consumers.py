@@ -109,10 +109,10 @@ class VirtuHire:
 
         # Initialize the tokenizer
         logger.debug('Loading tokeninzer')
-        self.tokenizer = AutoTokenizer.from_pretrained("mistralai/Mistral-7B-Instruct-v0.1")
-        logger.debug("Loading Mistral model.")
-        self.model = AutoModelForCausalLM.from_pretrained("mistralai/Mistral-7B-Instruct-v0.1", torch_dtype=torch.float16)
-        self.model.to(self.device)
+        # self.tokenizer = AutoTokenizer.from_pretrained("mistralai/Mistral-7B-Instruct-v0.1")
+        # logger.debug("Loading Mistral model.")
+        # self.model = AutoModelForCausalLM.from_pretrained("mistralai/Mistral-7B-Instruct-v0.1", torch_dtype=torch.float16)
+        # self.model.to(self.device)
         
         # Setup prompt for CV
         self.setup_prompt(cv=cv)
@@ -162,20 +162,23 @@ class VirtuHire:
         logger.info(f"USER: {query}")
 
         # Add the query to the prompt.
-        query = f"\n[INST][USER]: {query} [/INST]"
-        self.prompt += query
+        # query = f"\n[INST][USER]: {query} [/INST]"
+        # self.prompt += query
 
-        model_inputs = self.tokenizer([self.prompt], return_tensors="pt").to(self.device)
-        generated_ids = self.model.generate(**model_inputs, max_new_tokens=500, do_sample=True)
-        result = self.tokenizer.batch_decode(generated_ids)[0]
+        # model_inputs = self.tokenizer([self.prompt], return_tensors="pt").to(self.device)
+        # generated_ids = self.model.generate(**model_inputs, max_new_tokens=500, do_sample=True)
+        # result = self.tokenizer.batch_decode(generated_ids)[0]
         
-        # Get the latest response from the result.
-        result = result.split(query)[-1]
-        result = self.filter_response(result)
+        # # Get the latest response from the result.
+        # result = result.split(query)[-1]
+        # result = self.filter_response(result)
 
 
-        # Update the prompt with the latest result.
-        self.prompt += result
+        # # Update the prompt with the latest result.
+        # self.prompt += result
+
+        # FOR TESTING ....
+        result = query
 
         logger.info(f"VirtuHire: {result}")
         audio = self._get_audio(result)
@@ -188,6 +191,9 @@ class VirtuHireConsumer(WebsocketConsumer):
     def connect(self):
         print(f"New Connection established.")
         self.accept()
+        room_name = self.scope['url_route']['kwargs']['room_name']
+        logger.info(f"Room name: {room_name}")
+
         self.virtuHire = VirtuHire()
 
         # send a greeting message
