@@ -13,7 +13,7 @@ import LoadingBar from "../../components/LoadingBar";
 const ChatRoom = () => {
     const [chatLog, setChatLog] = useState([]);
     const [socket, setSocket] = useState(null);
-    const [started, setStarted] = useState(true);
+    const [started, setStarted] = useState(false);
     const [speaking, setSpeaking] = useState(false);
 
     const {
@@ -57,6 +57,7 @@ const ChatRoom = () => {
             setChatLog(chatLog => [...chatLog, { virtuHire: false, response:{"message":transcript} }]);
             socket.send(JSON.stringify({ 'message': transcript }));
             resetTranscript();
+            SpeechRecognition.stopListening();
         }
     }
 
@@ -89,8 +90,6 @@ const ChatRoom = () => {
                     />
                     <div id="action-buttons">
                         <img src={SendIcon} alt="Send Logo" onClick={sendMessage} />
-                        {/* <button onClick={SpeechRecognition.startListening}>Start</button> */}
-                        {/* <button onClick={SpeechRecognition.stopListening}>Stop</button> */}
                         <img src={MikeIcon} onClick={!listening?SpeechRecognition.startListening:SpeechRecognition.stopListening} alt="STT" />
                     </div>
                 </div>

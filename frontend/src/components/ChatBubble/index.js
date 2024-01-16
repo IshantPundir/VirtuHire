@@ -16,7 +16,7 @@ const ChatBubble = ({ virtuHire, response, speaking, setSpeaking }) => {
   };
 
   const playAudio = () => {
-    if (speaking) {
+    if (speaking & audioPlayer) {
       console.log("Stopping audio!");
       setSpeaking(false);
       audioPlayer.pause();
@@ -38,16 +38,17 @@ const ChatBubble = ({ virtuHire, response, speaking, setSpeaking }) => {
       const audioElement = new Audio();
       audioElement.src = URL.createObjectURL(blob);
 
-      // Stop audio when audio is done playing!
-      audioElement.onended = () => {
-        console.log("Audio playback complete!");
-        setSpeaking(false);
-      };
+      if (audioElement !== undefined) {
+        // Stop audio when audio is done playing!
+        audioElement.onended = () => {
+          console.log("Audio playback complete!");
+          setSpeaking(false);
+        };
 
-      audioElement.play();
-
-      // Set audio player reference for pause functionality
-      setAudioPlayer(audioElement);
+        audioElement.play();
+        // Set audio player reference for pause functionality
+        setAudioPlayer(audioElement);
+      }
     }
   };
 
@@ -56,7 +57,7 @@ const ChatBubble = ({ virtuHire, response, speaking, setSpeaking }) => {
     if (response.audio) {
       playAudio();
     }
-  });
+  }, [response.audio]);
 
 
   return (

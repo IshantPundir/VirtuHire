@@ -181,6 +181,7 @@ class VirtuHire:
         audio = self._get_audio(result)
 
         response = Response(message=result, audio=audio)
+        # response = Response(message=query, audio=self._get_audio(query))
         return response
 
 class VirtuHireConsumer(WebsocketConsumer):
