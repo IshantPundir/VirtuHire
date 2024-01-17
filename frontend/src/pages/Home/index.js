@@ -1,15 +1,21 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import UploadButton from "../../components/UploadButton";
+import LiveLogo from "../../components/LiveLogo";
 import "./style.css";
 
 
 const Home = () => {
+    useEffect(() => {
+        
+    }, []);
+
     return (
         <div id="home">
-            <h1 id="Name">Welcome to VirtuHire</h1>
-            <h2>Please upload a CV to start the interview</h2>
-            <UploadButton/>
+
+            <div id="Background" style={{ width: '100vw', height: '100vh' }}>
+                <LiveLogo style={{ width: '100vw', height: '100vh' }}/>
+            </div>
         </div>
     );
 };
