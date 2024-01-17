@@ -4,7 +4,6 @@ import { Canvas, extend } from '@react-three/fiber';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { MeshLine, MeshLineMaterial } from './MeshLine';
 import { Scene } from './Scene';
-import './style.css';
 
 // DodecahedronBufferGeometry
 extend({ MeshLine, MeshLineMaterial, OrbitControls});

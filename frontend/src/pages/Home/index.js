@@ -16,6 +16,8 @@ const Home = () => {
             <div id="Background" style={{ width: '100vw', height: '100vh' }}>
                 <LiveLogo style={{ width: '100vw', height: '100vh' }}/>
             </div>
+
+            <h1>Welcome to VirtuHire</h1>
         </div>
     );
 };
