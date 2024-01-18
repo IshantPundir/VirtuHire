@@ -1,3 +1,6 @@
+/*
+Thankyou to https://github.com/winkerVSbecks/3d-particle-effects-demo for the codes.
+*/
 import * as THREE from 'three';
 import React from 'react';
 import { Canvas, extend } from '@react-three/fiber';
