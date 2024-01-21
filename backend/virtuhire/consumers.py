@@ -3,7 +3,12 @@ import json
 import base64
 from typing import Tuple
 
-import torch
+try:
+    import torch
+    NO_TORCH=False
+except:
+    NO_TORCH=True
+
 from loguru import logger
 from transformers import AutoModelForCausalLM, AutoTokenizer
 from channels.generic.websocket import WebsocketConsumer
@@ -109,7 +114,7 @@ class VirtuHire:
         self.test_mode = test_mode
 
         # Initialize the tokenizer
-        if not test_mode:
+        if not test_mode and NO_TORCH is False:
             logger.debug('Loading tokeninzer')
             self.tokenizer = AutoTokenizer.from_pretrained("mistralai/Mistral-7B-Instruct-v0.1")
             logger.debug("Loading Mistral model.")
