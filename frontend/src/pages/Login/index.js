@@ -9,6 +9,7 @@ function Form ({ option }) {
     const [password, setPassword] = useState('');
     const [passwordR, setPasswordR] = useState('');
 
+
     const signin = async e => {
         if (email === "" || password === "") {
             return;
@@ -32,9 +33,9 @@ function Form ({ option }) {
                 console.log(response);
                 // Initialize the access & refresh token in localstorage.      
                 localStorage.clear();
-                localStorage.setItem('virtuhire_access_token', response.access);
-                localStorage.setItem('virtuhire_refresh_token', response.refresh);
-                axios.defaults.headers.common['Authorization'] =  `Bearer ${response['access']}`;
+                localStorage.setItem('virtuhire_access_token', response.data.access);
+                localStorage.setItem('virtuhire_refresh_token', response.data.refresh);
+                axios.defaults.headers.common['Authorization'] =  `Bearer ${response.data.access}`;
                 window.location.href = '/';
             })
             .catch((error) => {
