@@ -3,8 +3,8 @@
     top: 50%;
     left: 50%; 
     transform: translate(-50%, -50%);   
-    width: 50vw;
-    max-width: 800px;
+    width: 90vw;
+    max-width: 700px;
 
     text-align: center;
     color: white;
@@ -16,7 +16,7 @@
 .login > header {
     font-size: 1.3rem;
     font-weight: 700;
-    margin: 0 auto 60px auto;
+    margin: 0 auto 30px auto;
     position: relative;
     height: 25px;
     width: 250px;
@@ -42,7 +42,7 @@
 
 .options {
     display: flex;
-    /* justify-content: center; */
+    justify-content: left;
     /* align-items: center; */
     /* width: 50%; */
 }
@@ -62,9 +62,7 @@
 .options > li.active {
     opacity: 1;
 }
-.options > li:nth-of-type(2) {
-    /* margin-left: 15px; */
-}
+
 .options > li:last-of-type {
     margin-left: 30px;
 }
@@ -74,7 +72,7 @@
     width: 100%;
     display: flex;
     flex-direction: column;
-    margin-top: 30px;
+    margin-top: 00px;
 }
 
 .account-form-fields {

@@ -62,7 +62,7 @@ function Login () {
 	return (
 		<div className='login'>
 			<header>
-				<div className={'header-headings' + (option === 1 ? 'sign-in' : (option === 2 ? 'sign-up' : 'forgot')) }>
+				<div className={'header-headings ' + (option === 1 ? 'sign-in' : (option === 2 ? 'sign-up' : 'forgot')) }>
 					<span>Sign in to your account</span>
 					<span>Create an account</span>
 				</div>

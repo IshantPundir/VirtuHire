@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import "./style.css";
 
 const Profile = () => {
+    // TODO: Get the profile of user from backend and autofill the profile.
     const {
         register,
         handleSubmit,
