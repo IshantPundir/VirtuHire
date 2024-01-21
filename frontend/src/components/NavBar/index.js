@@ -25,10 +25,12 @@ const NavBar = () => {
 
     return (
         <div id="navbar" style={{backgroundColor:getNavBarColor()}}>
-            <div id="logo">
-                <img src="/logo.svg" alt="VirtuHire Logo" className="logo" />
-                <h1>VirtuHire</h1>
-            </div>
+            <Link to="/" style={{ textDecoration: 'none' }}>
+                <div id="logo">
+                    <img src="/logo.svg" alt="VirtuHire Logo" className="logo" />
+                    <h1>VirtuHire</h1>
+                </div>
+            </Link>
             <div id="links">
                 <Link to="/" style={{ textDecoration: 'none' }}>
                     <h1>Home</h1>                

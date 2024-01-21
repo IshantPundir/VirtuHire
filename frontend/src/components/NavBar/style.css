@@ -5,9 +5,13 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding-left: 10px;
-    padding-right: 100px;
     color: white;
+}
+
+#navbar h1 {
+  cursor: pointer;
+  user-select: none;
+  color: #fff;
 }
 
 #logo {
@@ -21,6 +25,8 @@
 #logo img{
     width: 40px;
     margin-right: 10px;
+    margin-left: 10px;
+
     /* filter: invert(1); */
 }
 
@@ -36,15 +42,13 @@
     padding-right: 25px;
     font-size: 20px;
     font-weight: 400;
-    cursor: pointer;
-    user-select: none;
-    color: #fff;
 }
 
 #account-button {
   --b: 1px;   /* border thickness */
   --s: .45em; /* size of the corner */
   --color: white;
+  margin-right: 10px;
   padding: calc(.5em + var(--s)) calc(.9em + var(--s));
   color: var(--color);
   --_p: var(--s);
