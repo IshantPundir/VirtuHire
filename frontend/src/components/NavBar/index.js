@@ -1,24 +1,35 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import "./style.css";
 
 
-const NavBar = (theme) => {    
+const NavBar = () => {    
     let navigate = useNavigate(); 
+    const location = useLocation();
+
+    // Determine the color based on the current route
+    const getNavBarColor = () => {
+        switch (location.pathname) {
+        case "/profile":
+            return "black";
+        default:
+            return "transparent";
+        }
+    };
+
     const routeChange = () =>{ 
         let path = `/login`; 
         navigate(path);
     }
 
     return (
-        <div id="navbar">
+        <div id="navbar" style={{backgroundColor:getNavBarColor()}}>
             <div id="logo">
                 <img src="/logo.svg" alt="VirtuHire Logo" className="logo" />
                 <h1>VirtuHire</h1>
             </div>
             <div id="links">
-                {/* TODO: css styling and routing */}
                 <Link to="/" style={{ textDecoration: 'none' }}>
                     <h1>Home</h1>                
                 </Link>

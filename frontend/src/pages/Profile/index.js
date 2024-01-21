@@ -1,8 +1,7 @@
 import React from "react";
-import { useForm, Controller } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 
 import "./style.css";
-import NavBar from "../../components/NavBar";
 
 const Profile = () => {
     const {
@@ -19,8 +18,7 @@ const Profile = () => {
     };
       
     return (
-        <div id="profile">
-            <NavBar/>
+        <section id="profile">
             <form onSubmit={handleSubmit(onSubmit)}>
                 <h1>Company's details</h1>
                 <div id="company-details" className="form-boundry">
@@ -68,7 +66,7 @@ const Profile = () => {
             <div id="action-bar">
                 <button>Save</button>
             </div>
-        </div>
+        </section>
     );
 };
  

@@ -1,8 +1,13 @@
 #navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 10px;
+    padding-left: 10px;
+    padding-right: 100px;
+    color: white;
 }
 
 #logo {
@@ -40,7 +45,6 @@
   --b: 1px;   /* border thickness */
   --s: .45em; /* size of the corner */
   --color: white;
-  
   padding: calc(.5em + var(--s)) calc(.9em + var(--s));
   color: var(--color);
   --_p: var(--s);
@@ -68,5 +72,5 @@
 
 #account-button:active {
   background: var(--color);
-  color: #fff;
+  /* color: #fff; */
 }

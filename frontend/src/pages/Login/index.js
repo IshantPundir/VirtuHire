@@ -2,10 +2,9 @@ import React, { useState } from "react";
 import axios from "axios";
 
 import "./style.css";
-import NavBar from "../../components/NavBar";
 
 function Form ({ option }) {
-    const [submited, setSubmited] = useState(false);
+    // const [submited, setSubmited] = useState(false);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [passwordR, setPasswordR] = useState('');
@@ -23,7 +22,7 @@ function Form ({ option }) {
         console.log(user);
         // TODO: Check option for sign in or sign out;
         // Create a POST request 
-        const {data} = await axios.post('http://127.0.0.1:8000/token/',
+        const {} = await axios.post('http://127.0.0.1:8000/token/',
             user,
             {headers: {
                 'Content-Type': 'application/json'
@@ -61,8 +60,6 @@ function Login () {
 	const [option, setOption] = React.useState(1)
 	
 	return (
-    <>
-        <NavBar/>
 		<div className='login'>
 			<header>
 				<div className={'header-headings ' + (option === 1 ? 'sign-in' : (option === 2 ? 'sign-up' : 'forgot')) }>
@@ -76,7 +73,6 @@ function Login () {
 			</ul>
 			<Form option={option} />
 		</div>
-    </>
 	)
 }
  

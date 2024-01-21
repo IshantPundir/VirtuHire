@@ -103,16 +103,18 @@ class Response:
     def audio(self) -> bytes|None:
         return self._audio
 class VirtuHire:
-    def __init__(self, device:str='cuda', cv:str="Swastik_Dubey_resume_.pdf") -> None:
+    def __init__(self, device:str='cuda', cv:str="Swastik_Dubey_resume_.pdf", test_mode=False) -> None:
         self.prompt = PROMPT
         self.device = device
+        self.test_mode = test_mode
 
         # Initialize the tokenizer
-        logger.debug('Loading tokeninzer')
-        self.tokenizer = AutoTokenizer.from_pretrained("mistralai/Mistral-7B-Instruct-v0.1")
-        logger.debug("Loading Mistral model.")
-        self.model = AutoModelForCausalLM.from_pretrained("mistralai/Mistral-7B-Instruct-v0.1", torch_dtype=torch.float16)
-        self.model.to(self.device)
+        if not test_mode:
+            logger.debug('Loading tokeninzer')
+            self.tokenizer = AutoTokenizer.from_pretrained("mistralai/Mistral-7B-Instruct-v0.1")
+            logger.debug("Loading Mistral model.")
+            self.model = AutoModelForCausalLM.from_pretrained("mistralai/Mistral-7B-Instruct-v0.1", torch_dtype=torch.float16)
+            self.model.to(self.device)
         
         # Setup prompt for CV
         self.setup_prompt(cv=cv)
@@ -161,6 +163,11 @@ class VirtuHire:
     def ask(self, query:str) -> Response:
         logger.info(f"USER: {query}")
 
+        if self.test_mode:
+            audio = self._get_audio(query)
+            response = Response(message=query, audio=audio)
+            return response
+
         # Add the query to the prompt.
         query = f"\n[INST][USER]: {query} [/INST]"
         self.prompt += query
@@ -177,14 +184,10 @@ class VirtuHire:
         # Update the prompt with the latest result.
         self.prompt += result
 
-        # FOR TESTING ....
-        # result = query
-
         logger.info(f"VirtuHire: {result}")
         audio = self._get_audio(result)
-
+        
         response = Response(message=result, audio=audio)
-        # response = Response(message=query, audio=self._get_audio(query))
         return response
 
 class VirtuHireConsumer(WebsocketConsumer):

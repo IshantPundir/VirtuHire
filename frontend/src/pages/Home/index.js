@@ -2,7 +2,6 @@ import React from "react";
 
 import LiveLogo from "../../components/LiveLogo";
 import "./style.css";
-import NavBar from "../../components/NavBar";
 
 const Home = () => {
     return (
@@ -28,8 +27,6 @@ const Home = () => {
                 />
             </div>
             
-            <NavBar id='nav-bar'/>
-
             <section>
                 <h1>Welcome to VirtuHire</h1>
                 <p>
