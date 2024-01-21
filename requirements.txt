@@ -5,6 +5,7 @@ django-cors-headers
 djangorestframework
 djangorestframework-simplejwt
 google-cloud-texttospeech
+google-cloud-speech
 tqdm
 transformers
 loguru

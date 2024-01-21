@@ -14,7 +14,7 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 from channels.generic.websocket import WebsocketConsumer
 from google.cloud import texttospeech
 
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "/home/ishant/projects/VirtuHire/backend/credentials/google-cloud-key.json"
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "credentials/google-cloud-key.json"
 
 PROMPT = """
 [INST]
