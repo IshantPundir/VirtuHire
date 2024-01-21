@@ -3,7 +3,7 @@
     top: 50%;
     left: 50%; 
     transform: translate(-50%, -50%);   
-    width: 90vw;
+    width: 50vw;
     max-width: 800px;
 
     text-align: center;
@@ -42,7 +42,7 @@
 
 .options {
     display: flex;
-    justify-content: center;
+    /* justify-content: center; */
     /* align-items: center; */
     /* width: 50%; */
 }
@@ -63,10 +63,10 @@
     opacity: 1;
 }
 .options > li:nth-of-type(2) {
-    margin-left: 15px;
+    /* margin-left: 15px; */
 }
 .options > li:last-of-type {
-    margin-left: auto;
+    margin-left: 30px;
 }
 
 .account-form {
