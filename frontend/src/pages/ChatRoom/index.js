@@ -45,7 +45,7 @@ const ChatRoom = () => {
                 }
             };
         }
-    }, [socket, setChatLog, started]);9
+    }, [socket, setChatLog, started]);
 
     if (!browserSupportsSpeechRecognition) {
         return <span>Browser doesn't support speech recognition.</span>;
