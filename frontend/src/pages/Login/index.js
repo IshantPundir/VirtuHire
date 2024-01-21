@@ -31,10 +31,10 @@ function Form ({ option }) {
                 console.log("Successfully logged in!");
                 console.log(response);
                 // Initialize the access & refresh token in localstorage.      
-                // localStorage.clear();
-                // localStorage.setItem('access_token', data.access);
-                // localStorage.setItem('refresh_token', data.refresh);
-                // axios.defaults.headers.common['Authorization'] =  `Bearer ${data['access']}`;
+                localStorage.clear();
+                localStorage.setItem('virtuhire_access_token', response.access);
+                localStorage.setItem('virtuhire_refresh_token', response.refresh);
+                axios.defaults.headers.common['Authorization'] =  `Bearer ${response['access']}`;
                 window.location.href = '/';
             })
             .catch((error) => {
@@ -57,42 +57,31 @@ function Form ({ option }) {
             console.error("Invalid form")
             return;
         }
-        // setSubmited(true);
+        setSubmited(true);
         const user = {
+            email: email,
             username: email,
             password: password,
-        }
+        };
 
-        // console.log(user);
-        // // TODO: Check option for sign in or sign out;
-        // // Create a POST request 
-        // await axios.post('http://127.0.0.1:8000/token/',
-        //     user,
-        //     {headers: {
-        //         'Content-Type': 'application/json'
-        //     }}, {withCredentials: true})
-        //     .then((response) => {
-        //         console.log("Successfully logged in!");
-        //         console.log(response);
-        //         // Initialize the access & refresh token in localstorage.      
-        //         // localStorage.clear();
-        //         // localStorage.setItem('access_token', data.access);
-        //         // localStorage.setItem('refresh_token', data.refresh);
-        //         // axios.defaults.headers.common['Authorization'] =  `Bearer ${data['access']}`;
-        //         window.location.href = '/';
-        //     })
-        //     .catch((error) => {
-        //         if (error.response) { // status code out of the range of 2xx
-        //             console.log("Data :" , error.response.data);
-        //             console.log("Status :" + error.response.status);
-        //         } else if (error.request) { // The request was made but no response was received
-        //             console.log(error.request);
-        //         } else {// Error on setting up the request
-        //             console.log('Error', error.message);
-        //         }
-        //     }).finally(() => {
-        //         setSubmited(false);
-        //     });
+        await axios.post('http://127.0.0.1:8000/signup/', user)
+            .then((response) => {
+                console.log('User registered successfully:', response.data);
+                console.log(response);
+                signin();
+            })
+            .catch((error) => {
+                if (error.response) { // status code out of the range of 2xx
+                    console.log("Data :" , error.response.data);
+                    console.log("Status :" + error.response.status);
+                } else if (error.request) { // The request was made but no response was received
+                    console.log(error.request);
+                } else {// Error on setting up the request
+                    console.log('Error', error.message);
+                }
+            }).finally(() => {
+                setSubmited(false);
+            });
     }
     
     const submit = async e => {
