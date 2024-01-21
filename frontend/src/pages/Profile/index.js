@@ -64,9 +64,6 @@ const Profile = () => {
                 </div>
                 <input type="submit" />
             </form>
-            <div id="action-bar">
-                <button>Save</button>
-            </div>
         </section>
     );
 };
