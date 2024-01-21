@@ -16,7 +16,7 @@ const Profile = () => {
         // Handle form submission, data contains the form values
         console.log('Form data:', data);
         // You can send this data to your backend for storage or further processing
-      };
+    };
       
     return (
         <div id="profile">

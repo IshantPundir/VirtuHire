@@ -1,10 +1,16 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 import "./style.css";
 
 
-const NavBar = () => {
+const NavBar = (theme) => {    
+    let navigate = useNavigate(); 
+    const routeChange = () =>{ 
+        let path = `/login`; 
+        navigate(path);
+    }
+
     return (
         <div id="navbar">
             <div id="logo">
@@ -26,8 +32,8 @@ const NavBar = () => {
                 </Link>
             </div>
             <div>
-                <button id="account-button">
-                    Register
+                <button id="account-button" onClick={routeChange}>
+                    Login
                 </button>
             </div>
         </div>

@@ -1,20 +1,12 @@
-import React, { useEffect } from "react";
+import React from "react";
 
-import UploadButton from "../../components/UploadButton";
 import LiveLogo from "../../components/LiveLogo";
 import "./style.css";
 import NavBar from "../../components/NavBar";
-import { RGBAFormat } from "three";
-
 
 const Home = () => {
-    useEffect(() => {
-        
-    }, []);
-
     return (
         <div id="home">
-
             <div id="background" style={{
                 position: "fixed",
                 top: 0,
@@ -35,6 +27,7 @@ const Home = () => {
                 }}
                 />
             </div>
+            
             <NavBar id='nav-bar'/>
 
             <section>
