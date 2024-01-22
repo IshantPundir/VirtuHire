@@ -51,49 +51,8 @@ Summarize key takeaways from the chat-based interview.
 Clearly communicate the next steps in the hiring process.
 Remember to adapt the questions based on the specific role and industry. Maintain a conversational flow suitable for a chat interface and aim for an inclusive and positive experience for all candidates.
 ***
-This is example conversation you might have with a candidate.
-[VirtuHire]: Welcome to the interview, [Candidate Name]! I'm VirtuHire, your AI HR interviewer. How are you today?
-
-[USER]: Hello VirtuHire! I'm [Candidate Name], and I'm doing well, thank you. Excited for the interview.
-
-[VirtuHire]: Great to hear! Let's start by discussing your educational background. Could you tell me about your academic journey and how it led you to your current role?
-
-[USER]: Certainly, VirtuHire. I completed my [Degree] at [University], and...
-
-[...]
-
-[VirtuHire]: That's insightful! Now, let's shift our focus to your technical skills. Can you share examples of projects where you've applied your expertise in [specific skill]?
-
-[USER]: Absolutely. In my previous role at [Previous Company], I was responsible for...
-
-[...]
-
-[VirtuHire]: Impressive! Moving on to behavioral questions, can you narrate a situation where you faced a challenge and how you overcame it?
-
-[USER]: Sure, VirtuHire. In a previous project...
-
-[...]
-
-[VirtuHire]: Thank you for sharing that. Now, let's discuss our company culture. Our values include [values]. How do you see yourself aligning with these values in your work?
-
-[USER]: I value [similar values], and I have demonstrated this alignment by...
-
-[...]
-
-[VirtuHire]: That's great to hear. Now, it's your turn. Do you have any questions about our company or the role?
-
-[USER]: Yes, VirtuHire. I'm curious about [specific aspect]...
-
-[...]
-
-[VirtuHire]: Excellent questions! Before we conclude, any final thoughts you'd like to share, [Candidate Name]?
-
-[USER]: I appreciate the opportunity, VirtuHire. I believe my skills and experiences align well with the role, and I look forward to the possibility of contributing to [Company Name].
-
-[VirtuHire]: Thank you, [Candidate Name]! We'll be in touch regarding the next steps. Have a great day!
-[/INST]
-
-[VirtueHire]: Hello, I'm VirtueHire, and I will be conducted your interview today, Can you please start by introducing youself.
+Since, this is a interactive conversation, always wait for the candidate to response, keep the questions breif and to the point. After every question you ask, add the token '[END]' to the end of your 
+sentence and wait for the user to respond.
 """
 
 class Response:
@@ -158,7 +117,7 @@ class VirtuHire:
             return None
         
     def filter_response(self, response:str) -> str:
-        response = response.split('[USER]')[0]
+        response = response.split('[END]')[0]
         return response.replace('</s>', '')
     
     def get_greet_response(self) -> Response:
@@ -176,7 +135,7 @@ class VirtuHire:
             return response
 
         # Add the query to the prompt.
-        query = f"\n[INST][USER]: {query} [/INST]"
+        query = f"\n[INST]{query} [/INST]"
         self.prompt += query
 
         model_inputs = self.tokenizer([self.prompt], return_tensors="pt").to(self.device)
@@ -201,6 +160,7 @@ class VirtuHireConsumer(WebsocketConsumer, IsAuthenticated):
     def connect(self):
         if not self.scope["user"].is_authenticated:
             logger.debug(f"scope: {self.scope}")
+            logger.debug(f"scope: {self.scope['user']}")
             # If the user is not authenticated, reject the connection
             # self.close()
             # return
