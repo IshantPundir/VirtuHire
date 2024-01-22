@@ -15,6 +15,7 @@ const ChatRoom = () => {
     const [socket, setSocket] = useState(null);
     const [started, setStarted] = useState(false);
     const [speaking, setSpeaking] = useState(false);
+    const [message, setMessageText] = useState("");
 
     const {
         transcript,
@@ -50,15 +51,29 @@ const ChatRoom = () => {
         }
     }, [socket, setChatLog, started]);
 
+
+    useEffect(() => {
+        setMessageText(transcript);
+    }, [transcript])
+
     if (!browserSupportsSpeechRecognition) {
         return <span>Browser doesn't support speech recognition.</span>;
     }
 
+    const startListening = () => {
+        SpeechRecognition.startListening({
+            continuous:true,
+            language:'en-IN'
+        });
+    }
+
+
     const sendMessage = () => {
-        if (transcript && socket) {
+        if (message && socket) {
             console.log("Sending message to VirtuHire")
-            setChatLog(chatLog => [...chatLog, { virtuHire: false, response:{"message":transcript} }]);
-            socket.send(JSON.stringify({ 'message': transcript }));
+            setChatLog(chatLog => [...chatLog, { virtuHire: false, response:{"message":message} }]);
+            socket.send(JSON.stringify({ 'message': message }));
+            setMessageText("");
             resetTranscript();
             SpeechRecognition.stopListening();
         }
@@ -88,12 +103,12 @@ const ChatRoom = () => {
                     <textarea
                         type="text"
                         placeholder="Write your response here"
-                        value={transcript}
-                        // onChange={(e) => setMessageText(e.target.value)}
+                        value={message}
+                        onChange={(e) => setMessageText(e.target.value)}
                     />
                     <div id="action-buttons">
                         <img src={SendIcon} alt="Send Logo" onClick={sendMessage} />
-                        <img src={MikeIcon} onClick={!listening?SpeechRecognition.startListening:SpeechRecognition.stopListening} alt="Action Button" />
+                        <img src={MikeIcon} onClick={!listening?startListening:SpeechRecognition.stopListening} alt="Action Button" />
                     </div>
                 </div>
                 </>

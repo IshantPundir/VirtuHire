@@ -212,7 +212,7 @@ class VirtuHireConsumer(WebsocketConsumer, IsAuthenticated):
         room_name = self.scope['url_route']['kwargs']['room_name']
         logger.info(f"Room name: {room_name}")
 
-        self.virtuHire = VirtuHire()
+        self.virtuHire = VirtuHire(test_mode=True)
 
         # send a greeting message
         greet_message = "Hello, I'm VirtueHire, and I will be conducted your interview today, Can you please start by introducing youself"
