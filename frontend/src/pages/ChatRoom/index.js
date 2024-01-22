@@ -27,8 +27,11 @@ const ChatRoom = () => {
         console.log("Connecting to VirtuHire websocket;");
         // TODO: Change lobby with CV id;
         const _socket = new WebSocket(
-            'ws://127.0.0.1:8000/ws/virtuhire/lobby/'
+            `ws://127.0.0.1:8000/ws/virtuhire/lobby/?token=${localStorage.getItem('virtuhire_access_token')}`
         );
+        // const _socket = new WebSocket(
+        //     'ws://127.0.0.1:8000/ws/virtuhire/lobby'
+        // );
         console.log("Connected to VirtuHire");
         setSocket(_socket);
     }, []);

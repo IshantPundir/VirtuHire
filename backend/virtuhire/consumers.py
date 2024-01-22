@@ -11,7 +11,8 @@ except:
 
 from loguru import logger
 from transformers import AutoModelForCausalLM, AutoTokenizer
-from channels.generic.websocket import WebsocketConsumer
+from channels.generic.websocket import WebsocketConsumer, AsyncWebsocketConsumer
+from rest_framework.permissions import IsAuthenticated
 from google.cloud import texttospeech
 
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "credentials/google-cloud-key.json"
@@ -107,6 +108,7 @@ class Response:
     @property
     def audio(self) -> bytes|None:
         return self._audio
+    
 class VirtuHire:
     def __init__(self, device:str='cuda', cv:str="Swastik_Dubey_resume_.pdf", test_mode=False) -> None:
         self.prompt = PROMPT
@@ -195,9 +197,17 @@ class VirtuHire:
         response = Response(message=result, audio=audio)
         return response
 
-class VirtuHireConsumer(WebsocketConsumer):
+class VirtuHireConsumer(WebsocketConsumer, IsAuthenticated):
     def connect(self):
-        print(f"New Connection established.")
+        if not self.scope["user"].is_authenticated:
+            logger.debug(f"scope: {self.scope}")
+            # If the user is not authenticated, reject the connection
+            # self.close()
+            # return
+        print(f"New Connection established for user: {self.scope['user'].username}")
+        self.room_name = self.scope['url_route']['kwargs']['room_name']
+        logger.info(f"Room name: {self.room_name}")
+
         self.accept()
         room_name = self.scope['url_route']['kwargs']['room_name']
         logger.info(f"Room name: {room_name}")

@@ -36,7 +36,7 @@ function Form ({ option }) {
                 localStorage.setItem('virtuhire_access_token', response.data.access);
                 localStorage.setItem('virtuhire_refresh_token', response.data.refresh);
                 axios.defaults.headers.common['Authorization'] =  `Bearer ${response.data.access}`;
-                window.location.href = '/';
+                // window.location.href = '/';
             })
             .catch((error) => {
                 if (error.response) { // status code out of the range of 2xx
