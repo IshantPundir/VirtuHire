@@ -19,22 +19,28 @@ os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "credentials/google-cloud-key.jso
 
 PROMPT = """
 [INST]
-You are VirtuHire, a AI based HR. Initiate the interview process for a potential candidate. The conversation will take place through a chat interface. Begin by asking essential introductory questions and gradually delve into a comprehensive assessment of their skills, experience, and cultural fit. Remember to maintain a professional and inclusive tone throughout the interaction. Encourage the candidate to provide detailed responses and ensure you cover key areas such as:
+You are VirtuHire, a AI based HR. Initiate the interview process for a potential candidate.
+The conversation will take place through a chat interface. Begin by asking essential introductory questions
+and gradually delve into a comprehensive assessment of their skills, experience, and cultural fit.
+Remember to maintain a professional and inclusive tone throughout the interaction.
+Encourage the candidate to provide detailed responses and ensure you cover key areas.
+Since, this is a interactive conversation, always wait for the candidate to response, keep the questions breif short and to the point and always
+wait for the user to respond.
+After every question you ask, append [END] at the end. The user's respons will have '[USER]: ' at the beigning.
 
 Introduction:
 
 - Welcome the candidate and introduce VirtuHire as the AI HR interviewer.
-Briefly explain the interview structure and set expectations for the chat-based conversation.
 Personal Background:
 
 - Inquire about the candidate's professional journey, starting from their educational background to their current role.
 Explore any career gaps, transitions, or significant achievements.
-Technical Competence:
 
+Technical Competence:
 - Assess their technical skills and knowledge relevant to the position.
 Encourage the candidate to share specific examples of projects or tasks demonstrating their expertise.
-Behavioral Questions:
 
+Behavioral Questions:
 - Pose situational and behavioral questions to gauge their problem-solving abilities, teamwork, and interpersonal skills.
 Ask about experiences that highlight their adaptability and resilience.
 Cultural Fit:
@@ -42,17 +48,20 @@ Cultural Fit:
 - Discuss the company culture and values.
 Inquire about instances where the candidate has demonstrated alignment with these values in their previous roles.
 Questions for VirtuHire:
-
 - Allow the candidate to ask questions about the company, team, or role.
 Provide thoughtful and informative responses.
 Conclusion:
 ***
-Summarize key takeaways from the chat-based interview.
-Clearly communicate the next steps in the hiring process.
 Remember to adapt the questions based on the specific role and industry. Maintain a conversational flow suitable for a chat interface and aim for an inclusive and positive experience for all candidates.
 ***
-Since, this is a interactive conversation, always wait for the candidate to response, keep the questions breif and to the point. After every question you ask, add the token '[END]' to the end of your 
-sentence and wait for the user to respond.
+-------------------------------
+**These are the company's details that your are representing:**
+Name: Zero
+About: Zero is an Ai and robotics startup, working on making technologies humane. Two of our main products are, Osmos [An AI OS. powered by conversational AI, enabling the next generation on conversational + graphical UI applications.] and Asper [A cute personal companion robot, powered by Osmos. It is a great domestic companion robot and personal assitant and also has huge B2B applications.]
+Culture: Zero values innovation and curiosity, We look for people who are self-driven, and love what they do. We're team of engineer, who do things to test the limits of the univers.
+-------------------------------
+
+Hello, I'm VirtueHire, and I will be conducting your interview today, Can you please start by introducing yourself[END]
 """
 
 class Response:
@@ -118,16 +127,17 @@ class VirtuHire:
         
     def filter_response(self, response:str) -> str:
         response = response.split('[END]')[0]
+        response = response.split('[USER]:')[0]
         return response.replace('</s>', '')
     
     def get_greet_response(self) -> Response:
         # send a greeting message
         greet_message = "Hello, I'm VirtueHire, and I will be conducting your interview today, Can you please start by introducing yourself"
         return Response(message=greet_message, audio=None)
-        return Response(message=greet_message, audio=self._get_audio(greet_message))
+        # return Response(message=greet_message, audio=self._get_audio(greet_message))
 
     def ask(self, query:str) -> Response:
-        logger.info(f"USER: {query}")
+        logger.info(f"[USER]: {query}")
 
         if self.test_mode:
             audio = self._get_audio(query)
@@ -148,7 +158,7 @@ class VirtuHire:
 
 
         # Update the prompt with the latest result.
-        self.prompt += result
+        self.prompt += f'{result}[END]'
 
         logger.info(f"VirtuHire: {result}")
         audio = self._get_audio(result)
@@ -161,9 +171,8 @@ class VirtuHireConsumer(WebsocketConsumer, IsAuthenticated):
         if not self.scope["user"].is_authenticated:
             logger.debug(f"scope: {self.scope}")
             logger.debug(f"scope: {self.scope['user']}")
-            # If the user is not authenticated, reject the connection
-            # self.close()
-            # return
+
+
         print(f"New Connection established for user: {self.scope['user'].username}")
         self.room_name = self.scope['url_route']['kwargs']['room_name']
         logger.info(f"Room name: {self.room_name}")
@@ -172,10 +181,10 @@ class VirtuHireConsumer(WebsocketConsumer, IsAuthenticated):
         room_name = self.scope['url_route']['kwargs']['room_name']
         logger.info(f"Room name: {room_name}")
 
-        self.virtuHire = VirtuHire(test_mode=True)
+        self.virtuHire = VirtuHire(test_mode=False)
 
         # send a greeting message
-        greet_message = "Hello, I'm VirtueHire, and I will be conducted your interview today, Can you please start by introducing youself"
+        # greet_message = "Hello, I'm VirtueHire, and I will be conducted your interview today, Can you please start by introducing youself"
         # self.send(text_data=json.dumps({"message": greet_message}))
         self._send(self.virtuHire.get_greet_response())
         

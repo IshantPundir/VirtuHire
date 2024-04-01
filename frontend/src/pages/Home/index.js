@@ -28,14 +28,14 @@ const Home = () => {
             </div>
             
             <section>
-                <h1>Welcome to VirtuHire</h1>
+                {/* <h1>Welcome to VirtuHire</h1>
                 <p>
                     Interview 1000s of candidates using conversational AI.
                 </p>
 
                 <button>
                     Get Started!
-                </button>
+                </button> */}
             </section>
         </div>
     );
